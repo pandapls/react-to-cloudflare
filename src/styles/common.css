@@ -2,7 +2,7 @@
 	--primary-color: #10a37f;
 	--primary-hover: #0e906f;
 	--bg-color: #343541;
-	--text-color: #ececf1;
+	--text-color: #ECECF1;
 	--border-color: #4a4b53;
 	--error-color: #ef4444;
 	--success-color: #22c55e;
@@ -38,7 +38,7 @@
 
 .chat-input {
 	width: 100%;
-	padding: 1rem;
+	padding: 1rem 3rem 1rem 1.5rem;
 	background-color: var(--chat-bg);
 	border: 1px solid var(--border-color);
 	border-radius: 0.75rem;
@@ -54,7 +54,7 @@
 .chat-input:focus {
 	outline: none;
 	border-color: var(--primary-color);
-	box-shadow: 0 0 0 2px rgba(16, 163, 127, 0.2);
+	box-shadow: 0 0 0 2px rgb(16 163 127 / 20%);
 }
 
 .submit-button {
@@ -76,14 +76,14 @@
 	transition: all 0.2s ease;
 }
 
-.submit-button:hover:not(:disabled) {
-	background-color: var(--primary-hover);
-}
-
 .submit-button:disabled {
 	background-color: var(--border-color);
 	opacity: 0.7;
 	cursor: not-allowed;
+}
+
+.submit-button:hover:not(:disabled) {
+	background-color: rgb(16 163 127 / 10%);
 }
 
 .submit-button svg {
@@ -161,7 +161,7 @@
 	max-width: 48rem;
 	margin: 0 auto;
 	padding: 1.5rem;
-	background-color: rgba(239, 68, 68, 0.1);
+	background-color: rgb(239 68 68 / 10%);
 	border: 1px solid var(--error-color);
 	border-radius: 0.5rem;
 	color: var(--error-color);
