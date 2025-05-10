@@ -18,6 +18,7 @@ export default function AskForm() {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             handleSubmit(e);
+            setPrompt('');
         }
     };
 
@@ -39,7 +40,6 @@ export default function AskForm() {
                         <textarea
                             value={prompt}
                             onChange={(e) => {
-                                setPrompt('')
                                 setPrompt(e.target.value)
                             }}
                             onKeyDown={handleKeyDown}
