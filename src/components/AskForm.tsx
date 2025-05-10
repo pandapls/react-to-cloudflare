@@ -38,7 +38,10 @@ export default function AskForm() {
                     <form onSubmit={handleSubmit}>
                         <textarea
                             value={prompt}
-                            onChange={(e) => setPrompt(e.target.value)}
+                            onChange={(e) => {
+                                setPrompt('')
+                                setPrompt(e.target.value)
+                            }}
                             onKeyDown={handleKeyDown}
                             placeholder="输入你的问题..."
                             className="chat-input"
