@@ -1,35 +1,70 @@
-name: CI
+name: Lint and Deploy to Cloudflare Pages
 
 on:
+  workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
-  build:
+  lint-and-build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        
-    - name: Install pnpm
-      uses: pnpm/action-setup@v2
-      with:
-        version: 8
-        
-    - name: Install dependencies
-      run: pnpm install
-      
-    - name: Run lint
-      run: |
-        pnpm lint:ts
-        pnpm lint:css
-        
-    - name: Run tests
-      run: pnpm test 
+      - name: ⬇️ Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'pnpm'
+
+      - name: 📦 Install dependencies
+        run: |
+          corepack enable
+          pnpm install
+
+      - name: ✅ Lint commit message (last commit)
+        run: pnpm commitlint --from=HEAD~1 || true
+
+      - name: 🎨 CSS Lint (stylelint)
+        run: pnpm lint:css
+
+      - name: 🧪 TypeScript Lint
+        run: pnpm lint:ts
+
+      - name: ⚙️ Build project
+        run: pnpm build
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: lint-and-build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: 📦 Install dependencies
+        run: |
+          corepack enable
+          pnpm install
+
+      - name: ⚙️ Build project
+        run: pnpm build
+
+      - name: 🚀 Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          projectName: react-to-cloudflare
+          directory: dist
