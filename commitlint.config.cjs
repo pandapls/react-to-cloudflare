@@ -18,11 +18,5 @@ module.exports = {
                 'ci',       // CI配置文件和脚本修改
             ],
         ],
-        'type-case': [2, 'always', 'lower'],
-        'type-empty': [2, 'never'],
-        'scope-empty': [2, 'never'],
-        'subject-empty': [2, 'never'],
-        'subject-full-stop': [2, 'never', '.'],
-        'header-max-length': [2, 'always', 72],
     },
 };
