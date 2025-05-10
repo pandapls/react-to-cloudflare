@@ -6,8 +6,8 @@
 	"scripts": {
 		"prepare": "husky install",
 		"lint:commit": "commitlint --from=HEAD~1",
-		"lint:css": "stylelint \"src/**/*.{css}\"",
-		"lint:ts": "eslint . --ext .ts,.tsx",
+		"lint:css": "stylelint \"src/**/*.{css,scss,less}\"",
+		"lint:ts": "eslint \"src/**/*.{ts,tsx}\"",
 		"check-all": "pnpm lint:commit && pnpm lint:css && pnpm lint:ts && pnpm build",
 		"dev": "vite",
 		"build": "tsc -b && vite build",

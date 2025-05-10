@@ -6,8 +6,8 @@ import AskForm from './components/AskForm';
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="App">
-        <header className="App-header">
+      <div>
+        <header className="app-header">
           <h1>Panda AI 问答</h1>
         </header>
         <main>
