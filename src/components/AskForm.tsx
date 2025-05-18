@@ -92,7 +92,7 @@ export default function AskForm() {
         // 直接使用GraphQL响应
         displayData = queryData;
     }
-
+    console.log(displayData, 'displayData')
     return (
         <div className="chat-container">
             <div className="mode-selector">

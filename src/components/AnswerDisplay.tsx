@@ -26,16 +26,16 @@ const AnswerDisplay: React.FC<AnswerDisplayProps> = ({ loading, error, data }) =
 
     // 处理从GraphQL或Agent返回的数据
     let answerText: string | undefined;
-
+    console.log(data, 'data')
     // 检查是GraphQL响应还是Agent响应
     if ('ask' in data) {
         // GraphQL响应
-        answerText = data.ask?.answer;
+        answerText = data.ask;
     } else if ('answer' in data) {
         // Agent响应
         answerText = data.answer;
     } else {
-        answerText = JSON.stringify(data, null, 2); // 作为后备，将整个响应转换为字符串
+        answerText = '问答异常～稍后再试'
     }
     console.log(answerText)
 

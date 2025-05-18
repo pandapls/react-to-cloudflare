@@ -1,8 +1,6 @@
 // types.ts - 添加到项目中
 export interface GraphQLAnswerResponse {
-	ask?: {
-		answer: string;
-	};
+	ask?: string;
 }
 
 // 根据库的实际定义调整这些类型
