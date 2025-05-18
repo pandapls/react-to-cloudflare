@@ -1,48 +1,53 @@
-import { ApolloError } from '@apollo/client';
+import React from 'react';
 import '../styles/common.css';
+import '../styles/markdown-styles.css'; // 导入Markdown样式
+import type { GraphQLAnswerResponse, GraphQLError, AgentError } from '../types';
+import ReactMarkdown from 'react-markdown';
 
 interface AnswerDisplayProps {
     loading: boolean;
-    error?: ApolloError;
-    data?: {
-        ask: string;
-    };
+    error: GraphQLError | AgentError | null | undefined;
+    data: GraphQLAnswerResponse | { answer: string } | null;
 }
 
-export default function AnswerDisplay({ loading, error, data }: AnswerDisplayProps) {
+const AnswerDisplay: React.FC<AnswerDisplayProps> = ({ loading, error, data }) => {
     if (loading) {
-        return (
-            <div className="loading-box">
-                <div className="loading-spinner" />
-                思考中...
-            </div>
-        );
+        return <div className="loading-indicator">正在思考...</div>;
     }
 
     if (error) {
-        return (
-            <div className="error-box">
-                <p>错误：{error.message}</p>
-                {error.graphQLErrors?.map((err, i) => (
-                    <p key={i}>{err.message}</p>
-                ))}
-                {error.networkError && <p>网络错误: {error.networkError.message}</p>}
-            </div>
-        );
+        return <div className="error-message">出错了: {error.message}</div>;
     }
 
+    // 检查是否有数据
     if (!data) {
-        return (
-            <div className="waiting-box">
-                <h2>AI 助手</h2>
-                <p>有什么我可以帮你的吗？</p>
-            </div>
-        );
+        return <div className="empty-state">请输入您的问题</div>;
+    }
+
+    // 处理从GraphQL或Agent返回的数据
+    let answerText: string | undefined;
+
+    // 检查是GraphQL响应还是Agent响应
+    if ('ask' in data) {
+        // GraphQL响应
+        answerText = data.ask?.answer;
+    } else if ('answer' in data) {
+        // Agent响应
+        answerText = data.answer;
+    } else {
+        answerText = JSON.stringify(data, null, 2); // 作为后备，将整个响应转换为字符串
+    }
+    console.log(answerText)
+
+    if (!answerText) {
+        return <div className="empty-state">没有找到回答</div>;
     }
 
     return (
-        <div className="message assistant">
-            <div className="answer-content">{data.ask}</div>
+        <div className="answer-content">
+            <ReactMarkdown>{answerText}</ReactMarkdown>
         </div>
     );
-} 
+};
+
+export default AnswerDisplay;
