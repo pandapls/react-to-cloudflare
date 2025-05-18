@@ -4,48 +4,35 @@ import '../styles/markdown-styles.css'; // 导入Markdown样式
 import type { GraphQLAnswerResponse, GraphQLError, AgentError } from '../types';
 import ReactMarkdown from 'react-markdown';
 
+interface ChatMessage {
+    role: string;
+    content: string;
+}
+
 interface AnswerDisplayProps {
     loading: boolean;
     error: GraphQLError | AgentError | null | undefined;
     data: GraphQLAnswerResponse | { answer: string } | null;
+    chatHistory: ChatMessage[];
 }
 
-const AnswerDisplay: React.FC<AnswerDisplayProps> = ({ loading, error, data }) => {
-    if (loading) {
-        return <div className="loading-indicator">正在思考...</div>;
-    }
-
+const AnswerDisplay: React.FC<AnswerDisplayProps> = ({ loading, error, data, chatHistory }) => {
     if (error) {
         return <div className="error-message">出错了: {error.message}</div>;
     }
 
-    // 检查是否有数据
-    if (!data) {
+    if (!data && chatHistory.length === 0) {
         return <div className="empty-state">请输入您的问题</div>;
     }
 
-    // 处理从GraphQL或Agent返回的数据
-    let answerText: string | undefined;
-
-    // 检查是GraphQL响应还是Agent响应
-    if ('ask' in data) {
-        // GraphQL响应
-        answerText = data.ask?.answer;
-    } else if ('answer' in data) {
-        // Agent响应
-        answerText = data.answer;
-    } else {
-        answerText = JSON.stringify(data, null, 2); // 作为后备，将整个响应转换为字符串
-    }
-    console.log(answerText)
-
-    if (!answerText) {
-        return <div className="empty-state">没有找到回答</div>;
-    }
-
     return (
-        <div className="answer-content">
-            <ReactMarkdown>{answerText}</ReactMarkdown>
+        <div>
+            {chatHistory.map((message, index) => (
+                <div key={index} className={`message ${message.role}`}>
+                    <ReactMarkdown>{message.content}</ReactMarkdown>
+                </div>
+            ))}
+            {loading && <div className="message assistant">正在思考...</div>}
         </div>
     );
 };

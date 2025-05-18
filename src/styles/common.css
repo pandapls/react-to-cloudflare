@@ -7,6 +7,8 @@
 	--error-color: #ef4444;
 	--success-color: #22c55e;
 	--chat-bg: #444654;
+	--user-bg: #424554;
+	--assistant-bg: #353641;
 }
 
 .chat-container {
@@ -27,7 +29,8 @@
 	padding: 1.5rem;
 	border-top: 1px solid var(--border-color);
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	align-items: center;
 }
 
 .input-container {
@@ -95,22 +98,63 @@
 }
 
 .answer-container {
-	max-width: 48rem;
+	max-width: 80rem;
 	margin: 0 auto;
 	padding: 0 1rem;
 }
 
+/* 问答式聊天布局 */
 .message {
 	padding: 1.5rem;
-	background-color: transparent;
+	margin-bottom: 1rem;
+	border-radius: 0.75rem;
+	position: relative;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
 }
 
 .message.user {
-	background-color: var(--bg-color);
+	background-color: var(--user-bg);
+	margin-left: auto;
+	margin-right: 1rem;
+	border-top-right-radius: 0.25rem;
+	text-align: right;
+	max-width: fit-content;
+	min-width: 10rem;
+	display: inline-block;
+	float: right;
+	clear: both;
 }
 
 .message.assistant {
-	background-color: var(--chat-bg);
+	background-color: var(--assistant-bg);
+	margin-right: auto;
+	margin-left: 1rem;
+	border-top-left-radius: 0.25rem;
+	text-align: left;
+	max-width: 80%;
+	display: inline-block;
+	float: left;
+	clear: both;
+}
+
+.message.loading {
+	position: relative;
+	padding-right: 3rem;
+}
+
+.message.loading::after {
+	content: "";
+	position: absolute;
+	width: 1rem;
+	height: 1rem;
+	right: 1rem;
+	top: 50%;
+	transform: translateY(-50%);
+	border: 2px solid var(--primary-color);
+	border-right-color: transparent;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
 }
 
 .answer-box {
@@ -122,6 +166,7 @@
 
 .answer-content {
 	font-size: 1rem;
+	line-height: 30px;
 	color: var(--text-color);
 }
 
@@ -176,6 +221,8 @@
   padding: 0 20px;
   display: flex;
   justify-content: flex-end;
+  max-width: 48rem;
+  width: 100%;
 }
 
 .mode-label {

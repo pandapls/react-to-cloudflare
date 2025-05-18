@@ -6,17 +6,35 @@ import '../styles/common.css';
 import mastraClient from '../utils/MastraClient';
 import type { AgentResponse, GraphQLAnswerResponse, AgentError } from "../types";
 
+// 定义聊天消息类型
+interface ChatMessage {
+    role: string;
+    content: string;
+}
+
 export default function AskForm() {
     const [prompt, setPrompt] = useState<string>('');
     const [useCodeReview, setUseCodeReview] = useState<boolean>(false);
+    const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
     const [getAnswer, { loading: queryLoading, error: queryError, data: queryData }] = useLazyQuery<GraphQLAnswerResponse>(ASK_QUERY);
     const [agentResponse, setAgentResponse] = useState<AgentResponse | null>(null);
     const [agentLoading, setAgentLoading] = useState<boolean>(false);
     const [agentError, setAgentError] = useState<AgentError | null>(null);
 
+    // 添加消息到历史记录
+    const addMessageToHistory = (role: string, content: string) => {
+        setChatHistory(prevHistory => [...prevHistory, { role, content }]);
+    };
+
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         if (!prompt.trim()) return;
+
+        // 添加用户问题到历史记录
+        addMessageToHistory('user', prompt);
+
+        // 清空输入框
+        setPrompt('');
 
         if (useCodeReview) {
             // 使用Code Review Agent
@@ -41,6 +59,16 @@ export default function AskForm() {
                 });
 
                 setAgentResponse(response as AgentResponse);
+
+                // 处理Agent响应结果并添加到历史记录
+                let answerText: string;
+                if ('text' in response && response.text) {
+                    answerText = response.text;
+                } else {
+                    // 作为后备，将整个响应转换为字符串
+                    answerText = JSON.stringify(response, null, 2);
+                }
+                addMessageToHistory('assistant', answerText);
             } catch (err) {
                 console.error('调用Agent时出错:', err);
                 const error: AgentError = {
@@ -51,17 +79,23 @@ export default function AskForm() {
                 setAgentLoading(false);
             }
         } else {
-        // 使用GraphQL查询
-            getAnswer({ variables: { prompt } });
+            // 使用GraphQL查询
+            getAnswer({
+                variables: { prompt },
+                onCompleted: (data) => {
+                    // 添加回答到历史记录
+                    if (data && data.ask) {
+                        addMessageToHistory('assistant', data.ask);
+                    }
+                }
+            });
         }
-        setPrompt('');
     };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             handleSubmit(e);
-            setPrompt('');
         }
     };
 
@@ -76,12 +110,9 @@ export default function AskForm() {
         // 处理Agent响应结果
         let answerText: string;
 
-        if (agentResponse.text) {
+        if ('text' in agentResponse && agentResponse.text) {
             // 如果有直接的text字段
             answerText = agentResponse.text;
-        } else if (agentResponse.choices && agentResponse.choices.length > 0 && agentResponse.choices[0].message) {
-            // 如果有choices数组中的消息
-            answerText = agentResponse.choices[0].message.content;
         } else {
             // 作为后备，将整个响应转换为字符串
             answerText = JSON.stringify(agentResponse, null, 2);
@@ -95,29 +126,29 @@ export default function AskForm() {
 
     return (
         <div className="chat-container">
-            <div className="mode-selector">
-                <label className={`mode-label ${useCodeReview ? 'active' : ''}`}>
-                    <input
-                        type="checkbox"
-                        checked={useCodeReview}
-                        onChange={(e) => setUseCodeReview(e.target.checked)}
-                        className="mode-checkbox"
-                    />
-                    使用Code Review Agent
-                </label>
-            </div>
-
             <div className="answer-panel">
                 <div className="answer-container">
                     <AnswerDisplay
                         loading={loading}
                         error={error}
                         data={displayData}
+                        chatHistory={chatHistory}
                     />
                 </div>
             </div>
 
             <div className="input-panel">
+                <div className="mode-selector">
+                    <label className={`mode-label ${useCodeReview ? 'active' : ''}`}>
+                        <input
+                            type="checkbox"
+                            checked={useCodeReview}
+                            onChange={(e) => setUseCodeReview(e.target.checked)}
+                            className="mode-checkbox"
+                        />
+                        使用Code Review Agent
+                    </label>
+                </div>
                 <div className="input-container">
                     <form onSubmit={handleSubmit}>
                         <textarea
