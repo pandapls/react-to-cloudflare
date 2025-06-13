@@ -1,6 +1,6 @@
 // src/graphql/client.ts
 import { ApolloClient, InMemoryCache } from '@apollo/client';
-const apiUrl = 'http://www.pandatest.site';
+const apiUrl = 'https://www.pandatest.site';
 
 // 创建 Apollo Client 实例
 export const client = new ApolloClient({

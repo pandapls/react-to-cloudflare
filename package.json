@@ -9,17 +9,9 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "tsc --noEmit & eslint ./src --ext .ts,.tsx,.js --fix"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pandapls/react-mvc-template.git"
-  },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/pandapls/react-mvc-template/issues"
-  },
-  "homepage": "https://github.com/pandapls/react-mvc-template#readme",
+  "homepage": "https://github.com/pandapls/react-to-cloudflare#readme",
   "description": "",
   "dependencies": {
     "@apollo/client": "^3.13.8",
