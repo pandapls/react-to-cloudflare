@@ -17,14 +17,17 @@
 		"rootDir": ".",
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["src/*"],
-			"@pages/*": ["src/pages/*"],
-			"@hooks/*": ["src/hooks/*"],
-			"@utils/*": ["src/utils/*"],
-			"@components/*": ["src/components/*"],
-			"@abis/*": ["src/abis/*"],
-			"@connections/*": ["src/connections/*"]
-		}
+      "@/*": ["src/*"],
+      "@pages/*": ["src/pages/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@utils/*": ["src/utils/*"],
+      "@components/*": ["src/components/*"],
+      "@abis/*": ["src/abis/*"],
+      "@types/*": ["src/types/*"],
+      "@connections/*": ["src/connections/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@graphql/*": ["src/graphql/*"]
+    }
 	},
 
 	"include": ["src", "tests"]

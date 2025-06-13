@@ -1,19 +1,11 @@
-import { useState } from "react";
-
+import { ApolloProvider } from '@apollo/client';
+import { client } from '@utils/ApolloClient';
+import Layouts from '@layouts/Index';
 const App = () => {
-	const [data, setData] = useState({ info: 'Hello world' });
   return (
-    <div>
-      <h1
-        className="text-4xl text-[#09F]"
-        onClick={() => {
-			console.log('object')
-          setData({ info: 'Hello world' });
-        }}
-      >
-        {data.info}
-      </h1>
-    </div>
+    <ApolloProvider client={client}>
+      <Layouts />
+    </ApolloProvider>
   );
 };
 App.whyDidYouRender = true; // Enable WDYR for this component

@@ -43,12 +43,12 @@ module.exports = {
                 }
                 const error = errors[0];
                 console.log(error);
-                notifier.notify({
-                    title: '👒 Webpack Build Error',
-                    message: severity + ': ' + error.name,
-                    subtitle: error.file || '',
-                    icon: join(__dirname, 'icon.png'),
-                });
+                // notifier.notify({
+                //     title: '👒 Webpack Build Error',
+                //     message: severity + ': ' + error.name,
+                //     subtitle: error.file || '',
+                //     icon: join(__dirname, 'icon.png'),
+                // });
             },
             clearConsole: true,
         }),
