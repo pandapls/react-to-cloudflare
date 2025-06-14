@@ -21,6 +21,7 @@
 ## 📋 前置条件
 
 确保安装以下工具：
+
 - **Node.js**（建议 >= 18.x）
 - **npm**（建议 >= 9.x）
 
@@ -29,11 +30,13 @@
 ## 📦 安装
 
 1. 克隆仓库：
+
    ```bash
    git clone https://github.com/pandapls/react-mvc-template.git
    ```
 
 2. 进入项目目录：
+
    ```bash
    cd react-mvc-template
    ```
@@ -49,13 +52,13 @@
 
 在项目根目录运行以下命令：
 
-| 命令                  | 描述                              |
-|-----------------------|-----------------------------------|
-| `npm run client:dev`  | 开发模式构建                      |
-| `npm run client:server` | 启动开发服务器（支持热重载）      |
-| `npm run client:prod` | 生产模式构建（优化输出）          |
-| `npm run lint`        | 运行 ESLint 检查代码              |
-| `npm run lint:fix`    | 运行 ESLint 和 TypeScript 检查并自动修复 |
+| 命令                    | 描述                                     |
+| ----------------------- | ---------------------------------------- |
+| `npm run client:dev`    | 开发模式构建                             |
+| `npm run client:server` | 启动开发服务器（支持热重载）             |
+| `npm run client:prod`   | 生产模式构建（优化输出）                 |
+| `npm run lint`          | 运行 ESLint 检查代码                     |
+| `npm run lint:fix`      | 运行 ESLint 和 TypeScript 检查并自动修复 |
 
 ---
 
@@ -79,11 +82,13 @@ react-mvc-template/
 ## 📚 依赖
 
 ### 生产依赖
+
 - **react**, **react-dom**：React 19 核心库
 - **tailwindcss**, **postcss**, **css-loader**：Tailwind CSS 样式支持
 - **@tailwindcss/postcss**：Tailwind 与 PostCSS 集成
 
 ### 开发依赖
+
 - **@swc/core**, **swc-loader**：快速 TypeScript/JavaScript 编译
 - **@types/react**, **@types/react-dom**：TypeScript 类型定义
 - **eslint**, **eslint-plugin-react**, **eslint-config-airbnb-typescript**：代码质量检查
